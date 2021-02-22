@@ -18,13 +18,15 @@ function refreshList() {
     }
 }
 
-let deleteflag=true;
+let deleteflag = true;
+let growFlag = false;
+let temp;
 function addTask() {
     let newTask = addInput.value;
-    if (newTask.length != 0 && newTask.length < 45) {
+    if (newTask.length != 0 && newTask.length < 36) {
         if (counter < 30) {
-
             counter++;
+
             const newItem = document.createElement("li");
             newItem.textContent = newTask;
             newItem.dataset.index = index;
@@ -39,30 +41,30 @@ function addTask() {
             refreshList();
             newItem.appendChild(deleteButton);
             addInput.value = "";
-            if (counter > 13) {
-                let temp =620+((counter-13)*30);
-                main.style.height=temp+"px";
+            if(counter>13){
+                temp = 620 + ((counter - 13) * 30);
+                main.style.height = temp + "px";
             }
-        }else if(counter>=30){
-            if(deleteflag){
+        } else if (counter >= 30) {
+            if (deleteflag) {
                 const deleteAll = document.createElement('div');
-                deleteAll.textContent="usun wszystko";
+                deleteAll.textContent = "usun wszystko";
                 deleteAll.classList.toggle('deleteAll')
                 ul.appendChild(deleteAll);
                 deleteflag = !deleteflag;
-                const deleteLsit=()=>{
+                const deleteLsit = () => {
                     deleteAll.classList.toggle('noDisplay');
-                    counter=0;
-                    main.style.height=620+"px";
+                    counter = 0;
+                    main.style.height = 620 + "px";
                     deleteflag = !deleteflag;
-                    list.length=0;
+                    list.length = 0;
                     refreshList();
                 }
-                deleteAll.addEventListener("click",deleteLsit);
+                deleteAll.addEventListener("click", deleteLsit);
             }
-            addInput.value="";
-            return alert("Zbyt duża ilość zadań")
-        } 
+            addInput.value = "";
+            return alert("Zbyt duża ilość zadań");
+        }
     } else if (newTask.length >= 36) {
         addInput.value = "";
         return alert("zbyt długa nazwa zadania");
@@ -73,15 +75,15 @@ const serachTask = (e) => {
     let search = e.target.value.toUpperCase();
     let serachList = document.querySelectorAll('li');
     serachList = Array.from(serachList);
-    serachList=serachList.filter(item=>item.textContent.toUpperCase().includes(search));
-    ul.textContent=""
-    serachList.forEach(item=>ul.appendChild(item));
-    matchingSpan.textContent=serachList.length;
-    if(serachList.length==0 || search ==""){
+    serachList = serachList.filter(item => item.textContent.toUpperCase().includes(search));
+    ul.textContent = ""
+    serachList.forEach(item => ul.appendChild(item));
+    matchingSpan.textContent = serachList.length;
+    if (serachList.length == 0 || search == "") {
         refreshList();
-        matchingSpan.textContent="0";
+        matchingSpan.textContent = "0";
     }
-    
+
 }
 
 function deleteTask(e) {
@@ -89,11 +91,11 @@ function deleteTask(e) {
     list.splice(deleteIndex, 1);
     deleteflag = !deleteflag;
     refreshList();
-    serachInput.value="";
+    serachInput.value = "";
     counter--;
-    if(counter<=13){
-        let temp =620+((counter-13)*30);
-        main.style.height=temp+"px";
+    if (counter < 13) {
+        let temp = 620 ;
+        main.style.height = temp + "px";
     }
 }
 
@@ -107,4 +109,3 @@ function enterTask(e) {
 document.addEventListener("keydown", enterTask);
 addButton.addEventListener("click", addTask);
 serachInput.addEventListener("input", serachTask);
-
